@@ -12,6 +12,33 @@ define('PA_DIR', plugin_dir_path(__FILE__));
 define('PA_VERSION', '1.0');
 define('PA_OPTION', 'pa_ext');
 
+// Les fonctions d'ajout/activation et suppression/désactivation de table
+function create_slider_table() {
+	global $wpdb;
+	$sql = "CREATE TABLE `wp_slider` (
+	  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+    `titre` varchar(255) NOT NULL,
+    `description` text NOT NULL,
+    `image_url` text NOT NULL,
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+	//dbDelta vérifie si la table existe déjà, à défaut elle exécute $sql
+	dbDelta( $sql );
+}
+
+function destroy_slider_table() {
+	global $wpdb;
+	$sql = "DROP TABLE `wp_slider`;";
+
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+	$wpdb->query( $sql );
+}
+
+// On bind les fonctions d'ajout et de suppression aux hooks correspondants
+register_activation_hook(__FILE__, 'create_slider_table');
+register_deactivation_hook(__FILE__, 'destroy_slider_table');
 
 add_action(
 	'admin_menu',
