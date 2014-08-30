@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Plugin Name: Poney Slider with Flexslider
  * Description: Slider qui utilise pour le front-end le code de flexslider et pour le back-end un code perso.
@@ -12,6 +12,9 @@ define('PA_DIR', plugin_dir_path(__FILE__));
 define('PA_VERSION', '1.0');
 define('PA_OPTION', 'pa_ext');
 
+
+// 1 -- INSTALL - UNINSTALL WP_SLIDER TABLE //
+//
 // Les fonctions d'ajout/activation et suppression/désactivation de table
 function create_slider_table() {
 	global $wpdb;
@@ -40,6 +43,8 @@ function destroy_slider_table() {
 register_activation_hook(__FILE__, 'create_slider_table');
 register_deactivation_hook(__FILE__, 'destroy_slider_table');
 
+
+// 2 -- AFFICHAGE DU MENU DANS L'ADMIN //
 add_action(
 	'admin_menu',
  	'pa_slider_menu');
@@ -185,7 +190,7 @@ add_action(
 				'slide-quatre');
 
 
-			// Fonction appelé en callback dans add_settings_section
+			// Fonction appelée en callback dans add_settings_section
 			function instructions_callback() {
 				echo "Veuillez entrer le titre, la description et la photo du slide.";
 			}
@@ -198,12 +203,15 @@ add_action(
 
 			function description_callback() {
 				$setting = esc_attr( get_option( 'my-setting'));
-				echo "<input type='text' name='my-setting' value='$setting' />";
+				echo "<textarea name='my-settings' row='50' cols='50'>";
+				echo "Entrez votre description";
+				echo "</textarea>";
 			}
 
 			function image_callback() {
-				$setting = esc_attr( get_option( 'my-setting'));
-				echo "<input type='text' name='my-setting' value='$setting' />";
+				echo "<a href='#' id='retrieve-media-url' class='button'/>";
+				echo "Récupérer l'URL du média";
+				echo "</a>";
 			}
 	}
 
@@ -217,6 +225,4 @@ add_action(
 	  echo		"</form>";
 		echo "</div>";
 	}
-
-
 
