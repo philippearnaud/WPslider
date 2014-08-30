@@ -146,7 +146,7 @@ add_action(
 			add_settings_field(
 				'slide-quatre-description',
 				'Description',
-				description_callback',
+				'description_callback',
 				'my-plugin',
 				'slide-quatre');
 
