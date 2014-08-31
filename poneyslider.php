@@ -53,6 +53,10 @@ add_action(
 	'admin_init',
 	'pa_slider_init');
 
+add_action(
+	'admin_enqueue_scripts',
+	'my_admin_scripts');
+
 	function pa_slider_menu() {
 		//add_theme_page($page_title, $menu_title, $capability, $menu_slug, $function)
 		add_theme_page(
@@ -102,7 +106,7 @@ add_action(
 				'slide-un');
 
 			function my_admin_scripts() {
-				if (isset($_GET['page']) && $_GET['page'] == 'poneyslider') {
+				if (isset($_GET['page']) && $_GET['page'] == 'my-plugin') {
 					wp_enqueue_media();
 					wp_register_script('my-admin-js', WP_PLUGIN_URL.'/poneyslider/my-admin.js', array('jquery'));
 					wp_enqueue_script('my-admin-js');
