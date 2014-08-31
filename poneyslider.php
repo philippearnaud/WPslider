@@ -78,29 +78,7 @@ add_action(
 				'instructions_callback',
 			 	'my-plugin');
 
-			//Slide 2
-			add_settings_section(
-				'slide-deux',
-				'Deuxième Slide',
-				'instructions_callback',
-				'my-plugin');
-
-			//Slide 3
-			add_settings_section(
-				'slide-trois',
-				'Troisième slide',
-				'instructions_callback',
-			 	'my-plugin');
-
-			//Slide 4
-			add_settings_section(
-				'slide-quatre',
-				'Quatrième Slide',
-				'instructions_callback',
-				'my-plugin');
-
-
-			//add_settings_field($id, $title, $callback, $page, $section, $args)
+						//add_settings_field($id, $title, $callback, $page, $section, $args)
 			//Champs de la section 1
 			add_settings_field(
 				'slide-un-titre',
@@ -123,71 +101,13 @@ add_action(
 				'my-plugin',
 				'slide-un');
 
-			//Champs de la section2
-			add_settings_field(
-				'slide-deux-titre',
-				'Titre',
-				'titre_callback',
-				'my-plugin',
-			 	'slide-deux');
-
-			add_settings_field(
-				'slide-deux-description',
-				'Description',
-				'description_callback',
-				'my-plugin',
-				'slide-deux');
-
-			add_settings_field(
-				'slide-deux-image',
-				'Image',
-				'image_callback',
-				'my-plugin',
-				'slide-deux');
-
-			// Champs du slide 3
-			add_settings_field(
-			 	'slide-trois-titre',
-				'Titre',
-				'titre_callback',
-				'my-plugin',
-			 	'slide-trois');
-
-			add_settings_field(
-				'slide-trois-description',
-				'Description',
-				'description_callback',
-				'my-plugin',
-				'slide-trois');
-
-			add_settings_field(
-				'slide-trois-image',
-				'Image',
-				'image_callback',
-				'my-plugin',
-				'slide-trois');
-
-			//Champs de la section4
-			add_settings_field(
-				'slide-quatre-titre',
-				'Titre',
-				'titre_callback',
-				'my-plugin',
-			 	'slide-quatre');
-
-			add_settings_field(
-				'slide-quatre-description',
-				'Description',
-				'description_callback',
-				'my-plugin',
-				'slide-quatre');
-
-			add_settings_field(
-				'slide-quatre-image',
-				'Image',
-				'image_callback',
-				'my-plugin',
-				'slide-quatre');
+			function my_admin_scripts() {
+				if (isset($_GET['page']) && $_GET['page'] == 'poneyslider') {
+					wp_enqueue_media();
+					wp_register_script('my-admin-js', WP_PLUGIN_URL.'/poneyslider/my-admin.js', array('jquery'));
+					wp_enqueue_script('my-admin-js');
+				}
+			}
 
 
 			// Fonction appelée en callback dans add_settings_section
@@ -209,9 +129,11 @@ add_action(
 			}
 
 			function image_callback() {
-				echo "<a href='#' id='retrieve-media-url' class='button'/>";
-				echo "Récupérer l'URL du média";
-				echo "</a>";
+				echo "<label for='upload_image'>";
+			  echo 			"<input id='upload_image'	type='text' size='36' name='upload_image'>";
+				echo 			"<input id='upload_image_button' type='button' value='Upload Image'>";
+				echo 			"<br/> Entrez une Url or téléchargez une image";
+				echo "</label>";
 			}
 	}
 
