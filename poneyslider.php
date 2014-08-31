@@ -45,18 +45,24 @@ register_deactivation_hook(__FILE__, 'destroy_slider_table');
 
 
 // 2 -- AFFICHAGE DU MENU DANS L'ADMIN //
+// 2.1 HOOK DES FONCTIONS //
+
+// A l'initialisation du menu, on charge la fonction pa_slider_menu
 add_action(
 	'admin_menu',
  	'pa_slider_menu');
 
+// A l'initialisation de l'admin, on charge la fonction pa_slider_init
 add_action(
 	'admin_init',
 	'pa_slider_init');
 
+// Lorsque les scripts js d'admin sont chargés, on lit la fonction my_admin_scripts aussi
 add_action(
 	'admin_enqueue_scripts',
 	'my_admin_scripts');
 
+//2.2 FONCTIONS D'AFFICHAGES//
 	function pa_slider_menu() {
 		//add_theme_page($page_title, $menu_title, $capability, $menu_slug, $function)
 		add_theme_page(
@@ -105,6 +111,7 @@ add_action(
 				'my-plugin',
 				'slide-un');
 
+			// PHP va chercher le script js du plugin poneyslider et charge-le dans le navigateur!
 			function my_admin_scripts() {
 				if (isset($_GET['page']) && $_GET['page'] == 'my-plugin') {
 					wp_enqueue_media();
