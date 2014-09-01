@@ -129,19 +129,19 @@ add_action(
 			// Fonction permettant de mettre un champ titre à chaque slide appelé en callback dans add_settings
 			function titre_callback() {
 				$setting = esc_attr( get_option( 'my-setting'));
-				echo "<input type='text' name='my-setting' value='$setting' />";
+				echo "<input type='text' name='titre' />";
 			}
 
 			function description_callback() {
 				$setting = esc_attr( get_option( 'my-setting'));
-				echo "<textarea name='my-settings' row='50' cols='50'>";
+				echo "<textarea name='description' row='50' cols='50'>";
 				echo "Entrez votre description";
 				echo "</textarea>";
 			}
 
 			function image_callback() {
 				echo "<label for='upload_image'>";
-			  echo 			"<input id='upload_image'	type='text' size='36' name='upload_image'>";
+                echo 			"<input id='upload_image'	type='text' size='36' name='upload_image'>";
 				echo 			"<input id='upload_image_button' type='button' value='Upload Image'>";
 				echo 			"<br/> Entrez une Url or téléchargez une image";
 				echo "</label>";
@@ -151,11 +151,11 @@ add_action(
 	function my_options_page() {
 		echo "<div class='wrap'>";
 		echo 		"<h2> Poney Slider feat. Flexslider </h2>";
-		echo		"<form action='options.php' method='POST'>";
+		echo		"<form action='traitement.php' method='POST'>";
 								settings_fields('my-settings-group');
 								do_settings_sections('my-plugin');
 								submit_button();
-	  echo		"</form>";
+        echo		"</form>";
 		echo "</div>";
 	}
 

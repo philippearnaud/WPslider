@@ -21,5 +21,8 @@ function add_entries($titre, $description, $image) {
 }
 
 add_entries($titre, $description, $image);
+wp_redirect( admin_url( )."/themes.php?page=my-plugin" );
+exit;
+
 
 ; ?>
