@@ -149,6 +149,14 @@ add_action(
 	}
 
 	function my_options_page() {
+        global $wpdb;
+        $slides = $wpdb->get_results(
+            "
+            SELECT titre, description, image_url
+            FROM wp_slider
+            "
+        );
+               
 		echo "<div class='wrap'>";
 		echo 		"<h2> Poney Slider feat. Flexslider </h2>";
 		echo		"<form action='traitement.php' method='POST'>";
@@ -157,5 +165,15 @@ add_action(
 								submit_button();
         echo		"</form>";
 		echo "</div>";
+        echo "<div class='wrap'>";
+
+        foreach ( $slides as $slide) {
+
+        echo "<h4>".$slide->titre."</h4>";
+        echo "<p>".$slide->description."</p>";
+        echo "<img src='".$slide->image_url."'>";
+
+        }
+        echo "</div>";
 	}
 
