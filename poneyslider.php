@@ -5,6 +5,9 @@
  * Author: Philippe-Arnaud de MANGOU
  */
 
+//TODO: Faire une validation sur le formulaire. 
+//TODO: Limiter le nombre de slides actifs à 5
+
 defined('ABSPATH') or die("No script kiddies please!");
 
 define('PA_URL', plugin_dir_url(__FILE__) );
@@ -61,6 +64,11 @@ add_action(
 add_action(
 	'admin_enqueue_scripts',
 	'my_admin_scripts');
+
+//lorsque les css sont chargés, in lit la fonction my_admin_css
+/*add_action(
+    'wp_enqueue_scripts',
+    'my_admin_css');*/
 
 //2.2 FONCTIONS D'AFFICHAGES//
 	function pa_slider_menu() {
@@ -120,6 +128,13 @@ add_action(
 				}
 			}
 
+            //PHP va chercher le css du plugin poneyslider et le charge dans le 
+            //navigateur
+          /*  function my_admin_css() {
+                    wp_register_style('my-plugin', plugins_url('poneyslider/css/plugin.css'));
+                    wp_enqueue_style('my-plugin');
+          }*/
+
 
 			// Fonction appelée en callback dans add_settings_section
 			function instructions_callback() {
@@ -152,27 +167,25 @@ add_action(
         global $wpdb;
         $slides = $wpdb->get_results(
             "
-            SELECT titre, description, image_url
+            SELECT id, titre, description, image_url
             FROM wp_slider
             "
         );
                
 		echo "<div class='wrap'>";
 		echo 		"<h2> Poney Slider feat. Flexslider </h2>";
-		echo		"<form action='traitement.php' method='POST'>";
+		echo		"<form id='poney_form' action='ajout.php' method='POST'>";
 								settings_fields('my-settings-group');
 								do_settings_sections('my-plugin');
 								submit_button();
         echo		"</form>";
 		echo "</div>";
-        echo "<div class='wrap'>";
-
+        echo "<div class='admin_slide'>";
         foreach ( $slides as $slide) {
-
+        echo "<a href='suppression.php?id=".$slide->id."'>Suppression slide</a>";
         echo "<h4>".$slide->titre."</h4>";
         echo "<p>".$slide->description."</p>";
         echo "<img src='".$slide->image_url."'>";
-
         }
         echo "</div>";
 	}
