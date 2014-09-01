@@ -92,7 +92,7 @@ add_action(
 			//Slide 1
 			add_settings_section(
 				'slide-un',
-				'Premier slide',
+				'Ajout Slide',
 				'instructions_callback',
 			 	'my-plugin');
 
@@ -124,7 +124,10 @@ add_action(
 				if (isset($_GET['page']) && $_GET['page'] == 'my-plugin') {
 					wp_enqueue_media();
 					wp_register_script('my-admin-js', WP_PLUGIN_URL.'/poneyslider/my-admin.js', array('jquery'));
+                    wp_register_script('update-js', WP_PLUGIN_URL.'/poneyslider/update_script.js', array('jquery'));
 					wp_enqueue_script('my-admin-js');
+                    wp_enqueue_script('update-js');
+                    
 				}
 			}
 
@@ -183,9 +186,9 @@ add_action(
         echo "<div class='admin_slide'>";
         foreach ( $slides as $slide) {
         echo "<a href='suppression.php?id=".$slide->id."'>Suppression slide</a>";
-        echo "<h4>".$slide->titre."</h4>";
-        echo "<p>".$slide->description."</p>";
-        echo "<img src='".$slide->image_url."'>";
+        echo "<h4 class='titre_slide'>".$slide->titre."</h4>";
+        echo "<p class='description_slide'>".$slide->description."</p>";
+        echo "<img class='image_slide' src='".$slide->image_url."'>";
         }
         echo "</div>";
 	}
