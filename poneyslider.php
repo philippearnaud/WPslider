@@ -47,6 +47,7 @@ register_activation_hook(__FILE__, 'create_slider_table');
 register_deactivation_hook(__FILE__, 'destroy_slider_table');
 
 
+
 // 2 -- AFFICHAGE DU MENU DANS L'ADMIN //
 // 2.1 HOOK DES FONCTIONS //
 
