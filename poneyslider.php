@@ -71,6 +71,7 @@ add_action(
     'wp_enqueue_scripts',
     'my_admin_css');*/
 
+
 //2.2 FONCTIONS D'AFFICHAGES//
 	function pa_slider_menu() {
 		//add_theme_page($page_title, $menu_title, $capability, $menu_slug, $function)
@@ -131,6 +132,7 @@ add_action(
                     
 				}
 			}
+                       
 
             //PHP va chercher le css du plugin poneyslider et le charge dans le 
             //navigateur
@@ -186,11 +188,53 @@ add_action(
 		echo "</div>";
         echo "<div class='admin_slide'>";
         foreach ( $slides as $slide) {
-        echo "<a href='suppression.php?id=".$slide->id."'>Suppression slide</a>";
+         $nonce = wp_create_nonce("suppression_slide_nonce");
+        $link = admin_url('admin-ajax.php?action=suppression_slide&slide_id='.$slide->id.'&nonce='.$nonce);
+        echo "<a class='suppression_slide' href='".$link."' data-nonce='".$nonce."' data-slide_id='".$slide->id."'>Suppression slide</a>";
         echo "<h4 class='titre_slide'>".$slide->titre."</h4>";
         echo "<p class='description_slide'>".$slide->description."</p>";
         echo "<img class='image_slide' src='".$slide->image_url."'>";
         }
         echo "</div>";
 	}
+    // AJAX STYLE AVEC DISGRACEFUL DEGRADATION
+    add_action("wp_ajax_suppression_slide", "suppression_slide");
 
+    function suppression_slide() {
+        if (!wp_verify_nonce($_REQUEST['nonce'], "suppression_slide_nonce")) {
+            exit("Pas de méchants please !");
+        }
+
+        global $wpdb;
+        $id = $_REQUEST['slide_id'];
+        $wpdb->delete('wp_slider', array('ID' => $id));
+
+        if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            $result = json_encode($result);
+            echo $result;
+        }
+
+        else {
+            header("Location: ".$_SERVER['HTTP_REFERER']); 
+        }
+        die();
+    }
+
+    add_action('init', 'my_script_enqueuer');
+
+    function my_script_enqueuer() {
+        wp_register_script(
+            "suppression_script",
+            WP_PLUGIN_URL.'/poneyslider/js/suppression_script.js',
+            array('jquery'));
+
+        wp_localize_script(
+            'suppression_script',
+            'myAjax',
+            array('ajax_url' => admin_url('admin-ajax.php')));
+
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('suppression_script');
+
+
+    }
