@@ -9,13 +9,11 @@ jQuery(document).ready(function() {
             url : myAjax.ajaxurl,
             data : {action: "suppression_slide", slide_id : slide_id, nonce : nonce },
             success: function(response) {
-                if(response.type == "success") {
+                if(response['type'] == "success") {
                     alert('it works');
-                    console.log('ça marche');
                 }
                 else {
                     alert('Bouh');
-                    console.log('ca marche pas');
                     }
             }
         })

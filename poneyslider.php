@@ -62,9 +62,9 @@ add_action(
 	'pa_slider_init');
 
 // Lorsque les scripts js d'admin sont chargés, on lit la fonction my_admin_scripts aussi
-add_action(
+ add_action(
 	'admin_enqueue_scripts',
-	'my_admin_scripts');
+	'my_admin_scripts'); 
 
 //lorsque les css sont chargés, in lit la fonction my_admin_css
 /*add_action(
@@ -126,12 +126,9 @@ add_action(
 				if (isset($_GET['page']) && $_GET['page'] == 'my-plugin') {
 					wp_enqueue_media();
 					wp_register_script('my-admin-js', WP_PLUGIN_URL.'/poneyslider/my-admin.js', array('jquery'));
-                    wp_register_script('update-js', WP_PLUGIN_URL.'/poneyslider/update_script.js', array('jquery'));
 					wp_enqueue_script('my-admin-js');
-                    wp_enqueue_script('update-js');
-                    
 				}
-			}
+		}
                        
 
             //PHP va chercher le css du plugin poneyslider et le charge dans le 
@@ -162,7 +159,7 @@ add_action(
 
 			function image_callback() {
 				echo "<label for='upload_image'>";
-                echo 			"<input id='upload_image'	type='text' size='36' name='upload_image'>";
+        echo 			"<input id='upload_image'	type='text' size='36' name='upload_image'>";
 				echo 			"<input id='upload_image_button' type='button' value='Upload Image'>";
 				echo 			"<br/> Entrez une Url or téléchargez une image";
 				echo "</label>";
@@ -177,7 +174,7 @@ add_action(
             FROM wp_slider
             "
         );
-               
+
 		echo "<div class='wrap'>";
 		echo 		"<h2> Poney Slider feat. Flexslider </h2>";
 		echo		"<form id='poney_form' action='ajout.php' method='POST'>";
@@ -185,16 +182,20 @@ add_action(
 								do_settings_sections('my-plugin');
 								submit_button();
         echo		"</form>";
-		echo "</div>";
+				echo "</div>";
         echo "<div class='admin_slide'>";
+				echo "<ul style='display:flex;'>";
         foreach ( $slides as $slide) {
-         $nonce = wp_create_nonce("suppression_slide_nonce");
+        $nonce = wp_create_nonce("suppression_slide_nonce");
         $link = admin_url('admin-ajax.php?action=suppression_slide&slide_id='.$slide->id.'&nonce='.$nonce);
+				echo "<li style='padding: 20px;'>";
         echo "<a class='suppression_slide' href='".$link."' data-nonce='".$nonce."' data-slide_id='".$slide->id."'>Suppression slide</a>";
         echo "<h4 class='titre_slide'>".$slide->titre."</h4>";
         echo "<p class='description_slide'>".$slide->description."</p>";
-        echo "<img class='image_slide' src='".$slide->image_url."'>";
+        echo "<img width='250' class='image_slide' src='".$slide->image_url."'>";
+				echo "</li>";
         }
+				echo "</ul>";
         echo "</div>";
 	}
     // AJAX STYLE AVEC DISGRACEFUL DEGRADATION
@@ -207,15 +208,25 @@ add_action(
 
         global $wpdb;
         $id = $_REQUEST['slide_id'];
-        $wpdb->delete('wp_slider', array('ID' => $id));
+        $delete_query = $wpdb->delete('wp_slider', array('ID' => $id));
 
+				if ($delete_query == 0) {
+					$result['type'] = 'error';
+					$result['log'] = 'Ca marche pas';
+				}
+				else {
+					$result['type'] = 'success';
+					$result['log'] = 'Ca marche';
+				}
+
+				$result = json_encode($result);
         if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
             $result = json_encode($result);
             echo $result;
         }
 
         else {
-            header("Location: ".$_SERVER['HTTP_REFERER']); 
+          header("Location: ".$_SERVER['HTTP_REFERER']);
         }
         die();
     }
@@ -235,6 +246,4 @@ add_action(
 
         wp_enqueue_script('jquery');
         wp_enqueue_script('suppression_script');
-
-
     }
