@@ -9,7 +9,6 @@
 //TODO: Limiter le nombre de slides actifs à 5
 
 defined('ABSPATH') or die("No script kiddies please!");
-
 define('PA_URL', plugin_dir_url(__FILE__) );
 define('PA_DIR', plugin_dir_path(__FILE__));
 define('PA_VERSION', '1.0');
