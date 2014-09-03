@@ -187,11 +187,12 @@ add_action(
         foreach ( $slides as $slide) {
         $nonce = wp_create_nonce("suppression_slide_nonce");
         $link = admin_url('admin-ajax.php?action=suppression_slide&slide_id='.$slide->id.'&nonce='.$nonce);
-				echo "<li style='padding: 20px;'>";
-        echo "<a class='suppression_slide' href='".$link."' data-nonce='".$nonce."' data-slide_id='".$slide->id."'>Suppression slide</a>";
-        echo "<h4 class='titre_slide'>".$slide->titre."</h4>";
-        echo "<p class='description_slide'>".$slide->description."</p>";
+				echo "<li style='width: 220px;padding: 20px;'>";
+        echo "<a class='suppression_slide' style='padding: 20px;'  href='".$link."' data-nonce='".$nonce."' data-slide_id='".$slide->id."'>Suppression slide</a>";
         echo "<img width='250' class='image_slide' src='".$slide->image_url."'>";
+				echo "<h4 class='titre_slide'>".$slide->titre."</h4>";
+        echo "<p class='description_slide'>".$slide->description."</p>";
+
 				echo "</li>";
         }
 				echo "</ul>";
